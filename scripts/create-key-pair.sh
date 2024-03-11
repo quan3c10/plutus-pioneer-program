@@ -5,12 +5,12 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-path=/workspace/keys
-mkdir -p "$path"
+path=/workspace/wallets
+mkdir -p "$path/$1"
 
-vkey="$path/$1.vkey"
-skey="$path/$1.skey"
-addr="$path/$1.addr"
+vkey="$path/$1/public.vkey"
+skey="$path/$1/private.skey"
+addr="$path/$1/add.addr"
 
 if [ -f "$vkey" ]; then
     >&2 echo "verification key file $vkey already exists"

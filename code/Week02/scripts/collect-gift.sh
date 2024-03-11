@@ -1,7 +1,10 @@
 #!/bin/bash
-
+#Require variables:
+#name: the name of user => use to find the wallet address to collect the ADA
+#txin: transaction hash of UTXO will collet (get from SM address) + #index
+#collateral: transaction hash of UTXO will use + #index in the wallet
 assets=/workspace/code/Week02/assets
-keypath=/workspace/keys
+keypath=/workspace/wallets/"$1"
 name="$1"
 collateral="$2"
 txin="$3"
@@ -10,8 +13,7 @@ pp="$assets/protocol-parameters.json"
 body="$assets/collect-gift.txbody"
 tx="$assets/collect-gift.tx"
 
-# Query the protocol parameters \
-
+# Query the protocol parameters, this only use when execute the SM on-chain
 cardano-cli query protocol-parameters \
     --testnet-magic 2 \
     --out-file "$pp"
@@ -25,14 +27,14 @@ cardano-cli transaction build \
     --tx-in-inline-datum-present \
     --tx-in-redeemer-file "$assets/unit.json" \
     --tx-in-collateral "$collateral" \
-    --change-address "$(cat "$keypath/$name.addr")" \
+    --change-address "$(cat "$keypath/add.addr")" \
     --protocol-params-file "$pp" \
     --out-file "$body"
     
 # Sign the transaction
 cardano-cli transaction sign \
     --tx-body-file "$body" \
-    --signing-key-file "$keypath/$name.skey" \
+    --signing-key-file "$keypath/private.skey" \
     --testnet-magic 2 \
     --out-file "$tx"
 
