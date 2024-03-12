@@ -20,14 +20,17 @@ meta="$governance/metadata.json"
 #apt-file update
 #apt-get install vim -y
 #apt install vim-common -y
-txin="d6eb5fd942f5503967784c844e9304554faa7be41cbea1948bef028fe269c00b#1"
+txmin="1ce01d3840f9e60bd9f22419c83f4a31f4984eab2a50c53ee5213510c5d90068#1"
+txburn="1ce01d3840f9e60bd9f22419c83f4a31f4984eab2a50c53ee5213510c5d90068#0"
 policyid=$(cat "policy/policyId")
-slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
+#slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
+slot=$(expr $(cardano-cli query tip --testnet-magic 2 | jq .slot?) + 10000)
 realtokenname="Quanuh NFT"
 tokenname=$(echo -n $realtokenname | xxd -b -ps -c 80 | tr -d '\n')
 tokenamount="1"
 fee="0"
 minlove="1400000"
+burnlove="1225831"
 ipfs_hash="k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8"
 description="This is my first NFT thanks to the Cardano foundation"
 name="Cardano foundation NFT guide token"
@@ -76,7 +79,7 @@ mint_nft() {
     cardano-cli transaction build \
         --testnet-magic 2 \
         --alonzo-era \
-        --tx-in $txin \
+        --tx-in $txmin \
         --tx-out $address+$minlove+"$tokenamount $policyid.$tokenname" \
         --change-address $address \
         --mint="$tokenamount $policyid.$tokenname" \
@@ -85,6 +88,20 @@ mint_nft() {
         --invalid-hereafter $slot \
         --witness-override 2 \
         --out-file "$txbody"
+}
+
+burn_nft() {
+    cardano-cli transaction build \
+    --testnet-magic 2 \
+    --alonzo-era \
+    --tx-in $txburn \
+    --tx-out $address+$burnlove \
+    --mint="-$tokenamount b3b708acd7ac244f0af279551826c7941eac31d107396fdbbf536d3d.5175616e7568204e4654" \
+    --minting-script-file $script \
+    --change-address $address \
+    --invalid-hereafter $slot \
+    --witness-override 2 \
+    --out-file "$txbody"
 }
 
 sign_tx() {
@@ -108,9 +125,11 @@ submit_tx() {
     echo "Cardanoscan: https://preview.cardanoscan.io/transaction/$tid"
 }
 
-generate_meta
+# generate_meta
 
-mint_nft
+# mint_nft
+
+burn_nft
 
 sign_tx
 

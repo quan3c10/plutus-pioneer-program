@@ -8,7 +8,12 @@ skey="$path/policy.skey"
 script="$path/policy.script"
 policyid="$path/policyId"
 
-generate_policy() {
+generate_policy_script() {
+
+    if [ -f "$script" ]; then
+        echo "remove old policy script file"
+        rm -rf $script
+    fi
 
     touch $script
 
@@ -30,17 +35,21 @@ generate_policy() {
     echo "wrote policy script to: $script"
 }
 
+generate_policy_id() {
+    if [ -f "$policyid" ]; then
+        rm -rf $policyid
+    fi
+
+    echo "cardano-cli transaction policyid --script-file $script > $policyid"
+    cardano-cli transaction policyid --script-file $script >$policyid
+    echo "policyid: $(cat $policyid) was wrote to: $policyid"
+}
+
 if [ ! -f "$vkey" ] || [ ! -f "$skey" ]; then
     echo >&2 "generate verification key file $vkey"
     cardano-cli address key-gen --verification-key-file "$vkey" --signing-key-file "$skey"
 fi
 
-if [ ! -f "$script" ]; then
-    generate_policy
-fi
+# generate_policy_script
 
-if [ ! -f "$policyid" ]; then
-    echo "cardano-cli transaction policyid --script-file $script > $policyid"
-    cardano-cli transaction policyid --script-file $script >$policyid
-    echo "policyid: $(cat $policyid) was wrote to: $policyid"
-fi
+generate_policy_id

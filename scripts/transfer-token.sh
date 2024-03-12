@@ -18,8 +18,7 @@ echo "Build command: \
         --tx-in "$txin" \
         --tx-out $(cat "$to/add.addr") + $(($amount * 1000000)) lovelace \
         --change-address $(cat "$from/add.addr") \
-        --out-file "$txbody"
-        "
+        --out-file "$txbody""
 
 # Build the transaction
 build_tx() {
@@ -51,3 +50,9 @@ submit_tx() {
     echo "transaction id: $tid"
     echo "Cardanoscan: https://preview.cardanoscan.io/transaction/$tid"
 }
+
+# build_tx
+
+# sign_tx
+
+# submit_tx
