@@ -2,7 +2,6 @@
 #Require variables:
 #name: the name of user => use to find the wallet address to transfer the ADA to contract
 #txin: transaction hash of UTXO will use + #index
-meta="governance/$1.json"
 
 #in case xxd does not work, please install vim and vim-common package
 #apt-get update
@@ -12,14 +11,16 @@ meta="governance/$1.json"
 #apt install vim-common -y
 policyid=$(cat "policy/policyId")
 slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
-realtokenname=$1
-tokenname=$(echo -n $realtokenname | xxd -b -ps -c 80 | tr -d '\n')
-#k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8
-ipfs_hash=$4
-description=$3
-name=$2
 
 generate_meta_data() {
+
+    meta="governance/$1.json"
+    realtokenname=$1
+    ipfs_hash=$4
+    description=$3
+    name=$2
+    tokenname=$(echo -n $realtokenname | xxd -b -ps -c 80 | tr -d '\n')
+    #k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8
 
     if [ -f "$meta" ]; then
         echo "remove old meta-data file"
@@ -43,5 +44,3 @@ generate_meta_data() {
 
     echo "wrote meta data to: $meta"
 }
-
-generate_meta_data

@@ -3,12 +3,8 @@
   "scripts":
   [
    {
-     "type": "before",
-     "slot": 43506063
-   },
-   {
      "type": "sig",
-     "keyHash": "17d3d96ba691853c97871d7872ce91a544f75f8fa6dae9b2f7ac74a0"
+     "keyHash": "18a6a2ce2909766787d01f4123fa3f91414238324236a2b1b145d733"
    }
   ]
 }

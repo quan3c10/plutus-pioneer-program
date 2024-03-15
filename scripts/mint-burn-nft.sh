@@ -20,11 +20,11 @@ meta="$governance/metadata.json"
 #apt-file update
 #apt-get install vim -y
 #apt install vim-common -y
-txmin="1ce01d3840f9e60bd9f22419c83f4a31f4984eab2a50c53ee5213510c5d90068#1"
-txburn="1ce01d3840f9e60bd9f22419c83f4a31f4984eab2a50c53ee5213510c5d90068#0"
+txin="76e8a43154fb1a7cbc593ec5303abce7a021faaf5ded5cdaaa0671bba727f03e#1"
+txburn="f53d3271fd9f54aa6be632bb2c1f9b3893232e9cf5c78280db5402cb6370b64d#0"
 policyid=$(cat "policy/policyId")
-#slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
-slot=$(expr $(cardano-cli query tip --testnet-magic 2 | jq .slot?) + 10000)
+slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
+# slot=$(expr $(cardano-cli query tip --testnet-magic 2 | jq .slot?) + 100000)
 realtokenname="Quanuh NFT"
 tokenname=$(echo -n $realtokenname | xxd -b -ps -c 80 | tr -d '\n')
 tokenamount="1"
@@ -79,7 +79,7 @@ mint_nft() {
     cardano-cli transaction build \
         --testnet-magic 2 \
         --alonzo-era \
-        --tx-in $txmin \
+        --tx-in $txin \
         --tx-out $address+$minlove+"$tokenamount $policyid.$tokenname" \
         --change-address $address \
         --mint="$tokenamount $policyid.$tokenname" \
@@ -96,7 +96,7 @@ burn_nft() {
     --alonzo-era \
     --tx-in $txburn \
     --tx-out $address+$burnlove \
-    --mint="-$tokenamount b3b708acd7ac244f0af279551826c7941eac31d107396fdbbf536d3d.5175616e7568204e4654" \
+    --mint="-$tokenamount $policyid.$tokenname" \
     --minting-script-file $script \
     --change-address $address \
     --invalid-hereafter $slot \

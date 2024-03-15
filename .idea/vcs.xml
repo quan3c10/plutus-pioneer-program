@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/cardano-a_-69e96f3eceed3ed5" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/cardano-l_-793ecdcee1fc1ce7" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/cardano-w_-c9e033b0ec7ad11b" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/plutus-si_-405d5a8470902f38" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/purescrip_-fa901c7e00b7f37b" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/quickchec_-59a1af83b9d68ed6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code/dist-newstyle/src/servant-p_-232829bf471577c2" vcs="Git" />
+  </component>
+</project>
