@@ -5,19 +5,24 @@ wallet=/workspace/wallets
 assets=/workspace/assets
 policy=/workspace/policy
 addpath="$wallet/quanuh"
-policyid=$(cat "policy/policyId")
+refscript="/workspace/datum/policy-script.plutus"
+policyid=$(cardano-cli transaction policyid --script-file $refscript)
 opaddr=$(cat $addpath/add.addr)
-txin=f53d3271fd9f54aa6be632bb2c1f9b3893232e9cf5c78280db5402cb6370b64d#1
+txin=08a991b09c1abb1537a61b0fb265f110e84629f8b2823f46666484be40840b2e#2
 txbody="$assets/club.txbody"
 tx="$assets/clubtx.tx"
 amount=20
-minlove="1400000"
+minlove="23687760"
 slot=$(expr $(cardano-cli query tip --testnet-magic 2 | jq .slot?) + 10000)
 confpath="./governance/global-config.json"
 token_list=$(cat ./governance/global-config.json | jq -r '.data | with_entries( select(.key|contains("Prefix")))')
 tokennames=$(cat ./governance/global-config.json | jq -r '.data | with_entries( select(.key|contains("Prefix"))) | keys[]')
-datum="/workspace/datum/general-state.json"
-reference="/workspace/datum/policy-script.plutus"
+generaldatum="/workspace/datum/general-state.json"
+tradingdatum="/workspace/datum/trading.json"
+navdatum="/workspace/datum/nav.json"
+depositdatum="/workspace/datum/deposit.json"
+withdrawdatum="/workspace/datum/withdraw.json"
+reference="d7dfc348ce291b976e72a8e8ac4a5ce8287bf444936e11ad094b7f7fe5225533#0"
 
 #Get governace information to know which SM add to spend token
 get_global_config() {
@@ -43,20 +48,25 @@ populate_token_meta_data() {
 transfer_to_generalState() {
 
     # smaddr=$(cat ./governance/global-config.json | jq -r '.data.generalState.address')
-    smaddr="addr_test1xrtly8cuhmuvhpjk9jkytjn9g3tk85n7tg4q5dwl4aa50vf63zxktut8jz2s5uk6ac0k82s94htdy6zrgyrulfdkwufqy0m7rm"
-    tokenname=$(cat ./governance/global-config.json | jq -r '.data.generalNftPrefix')
+    smaddr="addr_test1xplte6dn2wlznasgd4eanr6aq5dfqmjkz8kr0hr63vgqxfp63zxktut8jz2s5uk6ac0k82s94htdy6zrgyrulfdkwufq5tha9z"
+    generaltoken=$(cat ./governance/global-config.json | jq -r '.data.generalNftPrefix')
+    tradingtoken=$(cat ./governance/global-config.json | jq -r '.data.tradingNftPrefix')
+    navtoken=$(cat ./governance/global-config.json | jq -r '.data.navNftPrefix')
+    deposittoken=$(cat ./governance/global-config.json | jq -r '.data.depositStateNftPrefix')
+    withdrawtoken=$(cat ./governance/global-config.json | jq -r '.data.withdrawStateNftPrefix')
+    optoken=$(cat ./governance/global-config.json | jq -r '.data.operatorNftPrefix')
 
     cardano-cli transaction build \
         --testnet-magic 2 \
-        --alonzo-era \
+        --babbage-era \
         --tx-in $txin \
-        --mint="1 $policyid.$tokenname" \
-        --minting-script-file $policy/policy.script \
-        --metadata-json-file /workspace/governance/$tokenname.json \
-        --tx-out-inline-datum-cbor-file $datum \
-        --tx-out-reference-script-file ./assets/alwaysTrueV2.plutus \
-        --tx-out $smaddr+$minlove+"1 $policyid.$tokenname" \
-        --tx-out $smaddr+"$(($amount * 1000000)) lovelace" \
+        --simple-script-tx-in-reference $reference \
+        --mint="1 $policyid.$generaltoken" \
+        --minting-script-file $refscript \
+        --metadata-json-file /workspace/governance/$generaltoken.json \
+        --tx-out-inline-datum-file $generaldatum \
+        --tx-out-reference-script-file $refscript \
+        --tx-out $smaddr+$minlove+"1 $policyid.$generaltoken" \
         --change-address $opaddr \
         --invalid-hereafter $slot \
         --witness-override 2 \

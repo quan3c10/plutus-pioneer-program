@@ -29,8 +29,8 @@ realtokenname="Quanuh NFT"
 tokenname=$(echo -n $realtokenname | xxd -b -ps -c 80 | tr -d '\n')
 tokenamount="1"
 fee="0"
-minlove="1400000"
-burnlove="1225831"
+minfee="1400000"
+burnfee="1225831"
 ipfs_hash="k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8"
 description="This is my first NFT thanks to the Cardano foundation"
 name="Cardano foundation NFT guide token"
@@ -80,7 +80,7 @@ mint_nft() {
         --testnet-magic 2 \
         --alonzo-era \
         --tx-in $txin \
-        --tx-out $address+$minlove+"$tokenamount $policyid.$tokenname" \
+        --tx-out $address+$minfee+"$tokenamount $policyid.$tokenname" \
         --change-address $address \
         --mint="$tokenamount $policyid.$tokenname" \
         --minting-script-file $script \
@@ -95,7 +95,7 @@ burn_nft() {
     --testnet-magic 2 \
     --alonzo-era \
     --tx-in $txburn \
-    --tx-out $address+$burnlove \
+    --tx-out $address+$burnfee \
     --mint="-$tokenamount $policyid.$tokenname" \
     --minting-script-file $script \
     --change-address $address \
