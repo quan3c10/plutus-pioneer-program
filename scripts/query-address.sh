@@ -1,9 +1,9 @@
 #!/bin/bash
-if [ -z "$1" ]; then
-    >&2 echo "expected name as argument"
-    exit 1
-fi
+name="quanuh"
+addr_file="/workspace/wallets/$name/add.addr"
+# echo "Address is: $(cat $addr_file)"
+query_add(){
+    cardano-cli query utxo --address "$(cat $addr_file)" --testnet-magic 2
+}
 
-addr_file="/workspace/wallets/$1/add.addr"
-echo "Address is: $(cat $addr_file)"
-cardano-cli query utxo --address "$(cat $addr_file)" --testnet-magic 2
+# query_add

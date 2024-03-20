@@ -1,9 +1,15 @@
 {
   "721": {
-    "18af5541b37da95655d98850d966eff030c2220f2c80c98adffcab3b": {
+    "a8c063e68d1fae709a70a6907875feb1d2b1ea3b50c0cb03b023c43c": {
       "8686868602": {
         "description": "generalNftPrefix",
         "name": "generalNftPrefix",
+        "id": "1",
+        "image": "k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8"
+      },
+      "8686868603": {
+        "description": "tradingNftPrefix",
+        "name": "tradingNftPrefix",
         "id": "1",
         "image": "k51qzi5uqu5dgizwwls0lqv697i7l1mb8vylcmk04orpfyqayjlcl19a6ts4m8"
       }

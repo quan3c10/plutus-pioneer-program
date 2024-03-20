@@ -10,8 +10,8 @@
 #apt-get install vim -y
 #apt install vim-common -y
 clubname="Quanuh cardano cli"
-policyid=$(cat "policy/policyId")
-slot=$(cat "policy/policy.script" | grep slot | cut -d ':' -f 2)
+refscript="/workspace/datum/policy-script.plutus"
+policyid=$(cardano-cli transaction policyid --script-file $refscript)
 name=$(echo -n $clubname | xxd -b -ps -c 80 | tr -d '\n')
 lockupPeriod=6
 earlyWithdrawalPenalty=500
