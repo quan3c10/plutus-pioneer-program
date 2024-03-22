@@ -5,5 +5,3 @@ addr_file="/workspace/wallets/$name/add.addr"
 query_add(){
     cardano-cli query utxo --address "$(cat $addr_file)" --testnet-magic 2
 }
-
-# query_add
