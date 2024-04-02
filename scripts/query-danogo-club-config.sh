@@ -12,3 +12,5 @@ get_global_config() {
 
     curl https://club-bff.dev.tekoapis.net/api/v1/club/get-global-config >$confpath
 }
+
+get_global_config
